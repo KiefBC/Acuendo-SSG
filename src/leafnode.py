@@ -2,8 +2,8 @@ from htmlnode import HTMLNode
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag, value):
-        super().__init__(tag, value)
+    def __init__(self, tag=None, value=None, props=None):
+        super().__init__(tag=tag, value=value, children=None, props=props)
 
     def __eq__(self, other):
         return super().__eq__(other)

@@ -21,3 +21,8 @@ class TestLeafNode(unittest.TestCase):
         node = LeafNode("This is a leaf node", "Bold")
         node2 = LeafNode("This is a leaf node", "Italic")
         self.assertNotEqual(node, node2)
+
+    def test_ne2(self):
+        node = LeafNode("This is a leaf node", "Bold")
+        node2 = LeafNode("This is a different leaf node", "Bold")
+        self.assertNotEqual(node, node2)
