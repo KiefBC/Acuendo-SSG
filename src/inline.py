@@ -157,3 +157,20 @@ def extract_markdown_images(text):
 
 def extract_markdown_links(text):
     return re.findall(r"\[([^]]+)]\(([^)]+)\)", text)
+
+
+def markdown_to_blocks(markdown):
+    splits = markdown.split("\n\n")
+    blocks = []
+
+    for block in splits:
+        # Split into individual lines
+        lines = block.split("\n")
+
+        # Strip whitespaces
+        stripped_lines = [line.strip() for line in lines]
+        cleaned_block = "\n".join(stripped_lines)
+        blocks.append(cleaned_block.strip("\n"))
+
+    return blocks
+

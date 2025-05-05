@@ -3,6 +3,7 @@ import unittest
 from inline import (
     extract_markdown_images,
     extract_markdown_links,
+    markdown_to_blocks,
     split_nodes_delimiter,
     split_nodes_image,
     split_nodes_link,
@@ -131,6 +132,63 @@ class TestInline(unittest.TestCase):
 
         nodes = text_to_textnodes(input_text)
         self.assertEqual(nodes, expected)
+
+    def test_markdown_to_blocks(self):
+        md = """
+       This is **bolded** paragraph
+
+       This is another paragraph with _italic_ text and `code` here
+       This is the same paragraph on a new line
+
+       - This is a list
+       - with items
+       """
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_to_blocks_empty(self):
+        md = ""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [""])
+
+    def test_markdown_to_blocks_only_whitespace(self):
+        md = "   \n  \n\n   "
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["", ""])
+
+    def test_markdown_to_blocks_multiple_blank_lines(self):
+        md = "Paragraph one\n\n\n\nParagraph two"
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["Paragraph one", "", "Paragraph two"])
+
+    def test_markdown_to_blocks_leading_trailing_spaces(self):
+        md = "   Leading spaces paragraph   \n\n  Trailing spaces paragraph  "
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["Leading spaces paragraph", "Trailing spaces paragraph"])
+
+    def test_markdown_to_blocks_mixed_whitespace_lines(self):
+        md = """
+    First paragraph line 1
+      First paragraph line 2    
+
+    Second paragraph line 1
+    Second paragraph line 2  
+    """
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "First paragraph line 1\nFirst paragraph line 2",
+                "Second paragraph line 1\nSecond paragraph line 2",
+            ],
+        )
 
 
 if __name__ == "__main__":
