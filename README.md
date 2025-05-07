@@ -52,3 +52,8 @@ This SSG works by:
     ```bash
     pip install -r requirements.txt
     ```
+    
+4. **Generate:**
+    ```bash
+   ./main.sh
+   ```
