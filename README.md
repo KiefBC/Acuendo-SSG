@@ -34,8 +34,8 @@ This SSG works by:
 
 1.  **Clone the repository:**
     ```bash
-    git https://github.com/KiefBC/Static-Site-Generator.git
-    cd Static-Site-Generator
+    git https://github.com/KiefBC/Acuendo-SSG.git
+    cd Acuendo-SSG
     ```
 
 2.  **Create and activate a virtual environment (recommended):**
