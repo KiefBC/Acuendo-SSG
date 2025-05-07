@@ -1,9 +1,20 @@
 import re
 from enum import Enum
 
-from inline import markdown_to_blocks, text_node_to_html_node, text_to_textnodes
-from parentnode import ParentNode
-from textnode import TextNode, TextType
+from .inline import markdown_to_blocks, text_to_textnodes
+from .parentnode import ParentNode
+from .textnode import text_node_to_html_node
+from .leafnode import LeafNode
+
+
+class CodeBlockNode(ParentNode):
+    """A class representing a code block in Markdown."""
+    def to_html(self, indent_level=0, format_output=False):
+        _indent = "  " * indent_level if format_output else ""
+        props_html = self.props_to_html()
+        props_str = f" {props_html}" if props_html else ""
+        code_html = self.children[0].to_html(0, False)
+        return f"{_indent}<{self.tag}{props_str}>{code_html}</{self.tag}>"
 
 
 class BlockType(Enum):
@@ -63,15 +74,36 @@ def code_to_html_node(block):
     if block.startswith("```"):
         lines = block.split("\n")
         if lines[-1] == "```":
-            code_content = "\n".join(lines[1:-1]) + "\n"
+            code_lines = lines[1:-1]
         else:
-            code_content = "\n".join(lines[1:]) + "\n"
+            code_lines = lines[1:]
     else:
-        code_content = block
+        code_lines = block.split("\n")
 
-    text_node = TextNode(code_content, TextType.NORMAL)
-    code_node = text_node_to_html_node(text_node)
-    return ParentNode("pre", [ParentNode("code", [code_node])])
+    if code_lines:
+        # Find the minimum indentation of non-empty lines
+        min_indent = float('inf')
+        for line in code_lines:
+            if line.strip():
+                indent = len(line) - len(line.lstrip())
+                min_indent = min(min_indent, indent)
+
+        if min_indent < float('inf'):
+            # Remove only the common indentation from each line
+            # This preserves the relative indentation within code blocks
+            code_lines = [line[min_indent:] if line.strip() else line for line in code_lines]
+
+            # Detect if this is a code block with a function
+            # Look for lines that end with opening braces and have later indented lines
+            for i in range(len(code_lines) - 1):
+                if code_lines[i].strip().endswith('{'):
+                    # Add indentation to the next line if it doesn't have any
+                    if not code_lines[i+1].startswith(' ') and code_lines[i+1].strip():
+                        code_lines[i+1] = '    ' + code_lines[i+1]
+
+    code_content = "\n".join(code_lines) + "\n"
+    code_node = LeafNode("code", code_content)
+    return CodeBlockNode("pre", [code_node])
 
 
 def quote_to_html_node(block):
@@ -122,7 +154,7 @@ def ordered_list_to_html_node(block):
 
 def markdown_to_html_node(markdown):
     """
-    Convert a full markdown document to a single parent HTMLNode
+    Convert a full Markdown document to a single parent HTMLNode
     """
     markdown = markdown.strip("\n")
     blocks = markdown_to_blocks(markdown)
