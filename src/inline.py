@@ -1,27 +1,6 @@
 import re
 
-from leafnode import LeafNode
-from textnode import TextNode, TextType
-
-
-# I SPENT SO LONG ON THIS REALIZING I FORGOT TO PASS `tag: None`
-# TEST AFTER TEST FOR SOMETHING SO DUMB FUCK
-def text_node_to_html_node(text_node):
-    match text_node.text_type:
-        case TextType.NORMAL:
-            return LeafNode(None, text_node.text)
-        case TextType.BOLD:
-            return LeafNode("b", text_node.text)
-        case TextType.ITALIC:
-            return LeafNode("i", text_node.text)
-        case TextType.CODE:
-            return LeafNode("code", text_node.text)
-        case TextType.URL:
-            return LeafNode("a", text_node.text, {"href": text_node.url})
-        case TextType.IMG:
-            return LeafNode("img", None, {"src": text_node.url})
-        case _:
-            raise ValueError("Invalid text type")
+from .textnode import TextNode, TextType
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -52,23 +31,12 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
 
 def text_to_textnodes(text):
-    # Start with one big normal text node
     nodes = [TextNode(text, TextType.NORMAL)]
-
-    # First split code blocks (backticks)
     nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
-
-    # Then split bold (double asterisks)
     nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
-
-    # Then split italic (underscores)
-    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
-
-    # Then split images
     nodes = split_nodes_image(nodes)
-
-    # Then split links
     nodes = split_nodes_link(nodes)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
 
     return nodes
 
@@ -87,7 +55,6 @@ def split_nodes_image(old_nodes):
             result.append(old_node)
             continue
 
-        # Split the text into parts
         parts = []
         last_index = 0
 
@@ -136,7 +103,6 @@ def split_nodes_link(old_nodes):
                 if before_text:
                     result.append(TextNode(before_text, TextType.NORMAL))
 
-            # Link node
             result.append(TextNode(link_text, TextType.URL, url))
 
             # Update last_index to after this link markdown
@@ -164,13 +130,9 @@ def markdown_to_blocks(markdown):
     blocks = []
 
     for block in splits:
-        # Split into individual lines
         lines = block.split("\n")
-
-        # Strip whitespaces
         stripped_lines = [line.strip() for line in lines]
         cleaned_block = "\n".join(stripped_lines)
         blocks.append(cleaned_block.strip("\n"))
 
     return blocks
-

@@ -1,4 +1,4 @@
-from htmlnode import HTMLNode
+from .htmlnode import HTMLNode
 
 
 class LeafNode(HTMLNode):
@@ -8,11 +8,20 @@ class LeafNode(HTMLNode):
     def __eq__(self, other):
         return super().__eq__(other)
 
-    def to_html(self):
-        if self.value is None:
-            raise ValueError("Value cannot be None")
+    def to_html(self, indent_level=0, format_output=False):
+        indent = "  " * indent_level if format_output else ""
 
         if self.tag is None:
+            if self.value is None:
+                raise ValueError("Value cannot be None")
             return f"{self.value}"
 
-        return f"<{self.tag}>{self.value}</{self.tag}>"
+        if self.tag == "img":
+            props_html = self.props_to_html()
+            props_str = f" {props_html}" if props_html else ""
+            return f"{indent}<{self.tag}{props_str} />"  # self-closing tag
+
+        props_html = self.props_to_html()
+        props_str = f" {props_html}" if props_html else ""
+
+        return f"{indent}<{self.tag}{props_str}>{self.value}</{self.tag}>"
