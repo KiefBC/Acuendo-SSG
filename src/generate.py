@@ -48,38 +48,36 @@ def generate_page(from_path, template_path, dest_path, basepath=None):
         except Exception as e:
             print(f"Error extracting title: {e}")
 
-    # Process the entire markdown content
+    # Process the markdown content
     html_content = [markdown_to_html_node(markdown_content).to_html(format_output=True)]
 
-    # Apply basepath to HTML content before inserting into template
+    # Clean basepath for use in URLs
+    clean_basepath = ""
+    if basepath:
+        # Remove trailing slash from basepath if it exists
+        clean_basepath = basepath[:-1] if basepath.endswith('/') else basepath
+
+    # Process HTML content to add basepath to URLs
     if basepath:
         for i in range(len(html_content)):
             content = html_content[i]
-            if 'href="/' in content:
-                content = content.replace('href="/', f'href="{basepath}/')
-            if 'href=/' in content:
-                content = content.replace('href=/', f'href={basepath}/')
-            if 'src="/' in content:
-                content = content.replace('src="/', f'src="{basepath}/')
-            if 'src=/' in content:
-                content = content.replace('src=/', f'src={basepath}/')
+            # Apply basepath to URLs in the HTML content
+            content = content.replace('href="/', f'href="{clean_basepath}/')
+            content = content.replace('href=/', f'href={clean_basepath}/')
+            content = content.replace('src="/', f'src="{clean_basepath}/')
+            content = content.replace('src=/', f'src={clean_basepath}/')
             html_content[i] = content
 
+    # Process template content
     for i in range(len(template_content)):
         line = template_content[i]
         if "{{ Title }}" in line:
             line = line.replace("{{ Title }}", extracted_title)
         if "{{ Content }}" in line:
             line = line.replace("{{ Content }}", "\n".join(html_content))
+        if "{{ BasePath }}" in line:
+            line = line.replace("{{ BasePath }}", clean_basepath)
         template_content[i] = line
-        if basepath and 'href="/' in line:
-            template_content[i] = line.replace('href="/', f'href="{basepath}/')
-        if basepath and 'href=/' in line:
-            template_content[i] = line.replace('href=/', f'href={basepath}/')
-        if basepath and 'src="/' in line:
-            template_content[i] = line.replace('src="/', f'src="{basepath}/')
-        if basepath and 'src=/' in line:
-            template_content[i] = line.replace('src=/', f'src={basepath}/')
 
     with open(dest_path, "w") as f:
         f.writelines(template_content)
