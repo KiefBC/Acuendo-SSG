@@ -60,8 +60,12 @@ def generate_page(from_path, template_path, dest_path, basepath=None):
         template_content[i] = line
         if basepath and 'href="/' in line:
             template_content[i] = line.replace('href="/', f'href="{basepath}/')
+        if basepath and 'href=/' in line:
+            template_content[i] = line.replace('href=/', f'href={basepath}/')
         if basepath and 'src="/' in line:
             template_content[i] = line.replace('src="/', f'src="{basepath}/')
+        if basepath and 'src=/' in line:
+            template_content[i] = line.replace('src=/', f'src={basepath}/')
 
     with open(dest_path, "w") as f:
         f.writelines(template_content)
