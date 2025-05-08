@@ -51,6 +51,20 @@ def generate_page(from_path, template_path, dest_path, basepath=None):
     # Process the entire markdown content
     html_content = [markdown_to_html_node(markdown_content).to_html(format_output=True)]
 
+    # Apply basepath to HTML content before inserting into template
+    if basepath:
+        for i in range(len(html_content)):
+            content = html_content[i]
+            if 'href="/' in content:
+                content = content.replace('href="/', f'href="{basepath}/')
+            if 'href=/' in content:
+                content = content.replace('href=/', f'href={basepath}/')
+            if 'src="/' in content:
+                content = content.replace('src="/', f'src="{basepath}/')
+            if 'src=/' in content:
+                content = content.replace('src=/', f'src={basepath}/')
+            html_content[i] = content
+
     for i in range(len(template_content)):
         line = template_content[i]
         if "{{ Title }}" in line:
