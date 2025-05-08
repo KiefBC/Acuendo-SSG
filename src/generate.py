@@ -58,10 +58,10 @@ def generate_page(from_path, template_path, dest_path, basepath=None):
         if "{{ Content }}" in line:
             line = line.replace("{{ Content }}", "\n".join(html_content))
         template_content[i] = line
-        if 'href="/' in line:
-            line.replace('href="/', f'href="{basepath}/')
-        if 'src="/' in line:
-            line.replace('src="/', f'src="{basepath}/')
+        if basepath and 'href="/' in line:
+            template_content[i] = line.replace('href="/', f'href="{basepath}/')
+        if basepath and 'src="/' in line:
+            template_content[i] = line.replace('src="/', f'src="{basepath}/')
 
     with open(dest_path, "w") as f:
         f.writelines(template_content)
