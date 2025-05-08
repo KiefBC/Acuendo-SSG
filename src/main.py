@@ -1,10 +1,11 @@
 import os
 import shutil
+import sys
 
 from .generate import generate_page
 
 
-def process_markdown_files(content_dir, template_path, dest_dir):
+def process_markdown_files(content_dir, template_path, dest_dir, basepath):
     for item in os.listdir(content_dir):
         content_path = os.path.join(content_dir, item)
 
@@ -16,7 +17,7 @@ def process_markdown_files(content_dir, template_path, dest_dir):
                 os.makedirs(dest_subdir)
 
             # Process markdown files in subdirectory
-            process_markdown_files(content_path, template_path, dest_subdir)
+            process_markdown_files(content_path, template_path, dest_subdir, basepath)
         elif item.endswith(".md"):
             # Process markdown file
             file_name = os.path.splitext(item)[0]
@@ -39,18 +40,25 @@ def process_markdown_files(content_dir, template_path, dest_dir):
                     dest_path = os.path.join(dest_dir, f"{file_name}.html")
                 else:
                     # Files in subdirectories
-                    dest_path = os.path.join(dest_dir, relative_dir, f"{file_name}.html")
+                    dest_path = os.path.join(
+                        dest_dir, relative_dir, f"{file_name}.html"
+                    )
 
             # Ensure the destination directory exists
             os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
             # Generate the HTML page
-            generate_page(content_path, template_path, dest_path)
+            generate_page(content_path, template_path, dest_path, basepath)
+
 
 def main():
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
     root_dir = os.path.abspath(os.path.join(os.getcwd()))
     src_path = os.path.join(root_dir, "static")
-    dest_path = os.path.join(root_dir, "public")
+    dest_path = os.path.join(root_dir, "docs")
     from_path = os.path.join(root_dir, "content")
 
     print("We are building the static files")
@@ -59,7 +67,7 @@ def main():
 
     # Process all markdown files in content directory and its subdirectories
     template_path = os.path.join(root_dir, "template.html")
-    process_markdown_files(from_path, template_path, dest_path)
+    process_markdown_files(from_path, template_path, dest_path, basepath)
 
 
 def copy_files(src: str, dest: str):

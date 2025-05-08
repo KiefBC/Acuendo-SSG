@@ -21,12 +21,12 @@ class ParentNode(HTMLNode):
 
         if format_output:
             children_html = line_break.join(
-                next_indent + (child.to_html(indent_level + 1, format_output) if isinstance(child, HTMLNode) else str(child))
+                next_indent + (child.to_html(indent_level + 1, format_output) if isinstance(child, HTMLNode) else str(child).strip())
                 for child in self.children
             )
         else:
             children_html = "".join(
-                child.to_html(indent_level + 1, format_output) if isinstance(child, HTMLNode) else str(child)
+                child.to_html(indent_level + 1, format_output) if isinstance(child, HTMLNode) else str(child).strip()
                 for child in self.children
             )
 
@@ -35,7 +35,11 @@ class ParentNode(HTMLNode):
 
         if children_html:
             if format_output:
-                return f"{indent}<{self.tag}{props_str}>{line_break}{children_html}{line_break}{indent}</{self.tag}>"
+                if self.tag.startswith("h") or self.tag == "li" or self.tag == "blockquote":
+                    trimmed_content = ' '.join(children_html.split())
+                    return f"{indent}<{self.tag}{props_str}>{trimmed_content}</{self.tag}>"
+                else:
+                    return f"{indent}<{self.tag}{props_str}>{line_break}{children_html}{line_break}{indent}</{self.tag}>"
             else:
                 return f"<{self.tag}{props_str}>{children_html}</{self.tag}>"
         else:

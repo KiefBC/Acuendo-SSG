@@ -11,7 +11,7 @@ def extract_title(markdown):
     return heading_level
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath=None):
     from_path = os.path.abspath(from_path)
     template_path = os.path.abspath(template_path)
     dest_path = os.path.abspath(dest_path)
@@ -58,6 +58,10 @@ def generate_page(from_path, template_path, dest_path):
         if "{{ Content }}" in line:
             line = line.replace("{{ Content }}", "\n".join(html_content))
         template_content[i] = line
+        if 'href="/' in line:
+            line.replace('href="/', f'href="{basepath}/')
+        if 'src="/' in line:
+            line.replace('src="/', f'src="{basepath}/')
 
     with open(dest_path, "w") as f:
         f.writelines(template_content)

@@ -17,7 +17,8 @@ Here's the deal, **I like Tolkien**.
 ## Reasons I like Tolkien
 
 - You can spend years studying the legendarium and still not understand its depths
-- It can be enjoyed by children and adults alike - Disney _didn't ruin it_ (okay, but Amazon might have)
+- It can be enjoyed by children and adults alike 
+- - Disney _didn't ruin it_ (okay, but Amazon might have)
 - It created an entirely new genre of fantasy
 
 ## My favorite characters (in order)
