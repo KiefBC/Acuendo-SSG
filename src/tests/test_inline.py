@@ -100,7 +100,7 @@ class TestInline(unittest.TestCase):
         input_text = (
             "This is **text** with an _italic_ word and a `code block` "
             "and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) "
-            "and a [link](https://boot.dev)"
+            "and a [link](https://example.com)"
         )
 
         expected = [
@@ -113,7 +113,7 @@ class TestInline(unittest.TestCase):
             TextNode(" and an ", TextType.NORMAL),
             TextNode("obi wan image", TextType.IMG, "https://i.imgur.com/fJRm4Vk.jpeg"),
             TextNode(" and a ", TextType.NORMAL),
-            TextNode("link", TextType.URL, "https://boot.dev"),
+            TextNode("link", TextType.URL, "https://example.com"),
         ]
 
         nodes = text_to_textnodes(input_text)
