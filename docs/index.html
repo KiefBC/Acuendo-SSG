@@ -3,63 +3,64 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tolkien Fan Club</title>
-    <link href="/Acuendo-SSG/index.css" rel="stylesheet" />
+    <title>My Passions & Interests</title>
+    <link href="/index.css" rel="stylesheet" />
   </head>
 
   <body>
     <article><div>
-    <h1>Tolkien Fan Club</h1>
+    <h1>My Passions & Interests</h1>
     <p>
-        <img src=/Acuendo-SSG/images/tolkien.png />
+        <img src=/images/tolkien.png />
   </p>
     <p>
     Here's the deal, 
-        <b>I like Tolkien</b>
+        <b>I'm passionate about technology, gaming, and fitness</b>
     .
   </p>
-    <blockquote>"I am in fact a Hobbit in all but size." -- J.R.R. Tolkien</blockquote>
+    <blockquote>"The best programs are written when the programmer is supposed to be working on something else." -- Melinda Varian</blockquote>
     <h2>Blog posts</h2>
     <ul>
-        <li><a href=/Acuendo-SSG/blog/glorfindel>Why Glorfindel is More Impressive than Legolas</a></li>
-        <li><a href=/Acuendo-SSG/blog/tom>Why Tom Bombadil Was a Mistake</a></li>
-        <li><a href=/Acuendo-SSG/blog/majesty>The Unparalleled Majesty of "The Lord of the Rings"</a></li>
+        <li><a href=/blog/glorfindel>Why Go is More Impressive than Other Languages</a></li>
+        <li><a href=/blog/tom>Why Mobile Gaming Was a Mistake</a></li>
+        <li><a href=/blog/majesty>The Unparalleled Majesty of Rust Programming</a></li>
   </ul>
-    <h2>Reasons I like Tolkien</h2>
+    <h2>What drives me</h2>
     <ul>
-        <li>You can spend years studying the legendarium and still not understand its depths</li>
-        <li>It can be enjoyed by children and adults alike</li>
-        <li>- Disney <i>didn't ruin it</i> (okay, but Amazon might have)</li>
-        <li>It created an entirely new genre of fantasy</li>
+        <li><b>Programming Languages</b> : The elegance of Go's simplicity and Rust's safety</li>
+        <li><b>PC Gaming</b> : The freedom of choice in hardware, mods, and game complexity</li>
+        <li><b>Strength Training</b> : Building both physical and mental resilience</li>
+        <li><b>Continuous Learning</b> : Each domain teaches lessons applicable to the others</li>
   </ul>
-    <h2>My favorite characters (in order)</h2>
-    <ol>
-        <li>Gandalf</li>
-        <li>Bilbo</li>
-        <li>Sam</li>
-        <li>Glorfindel</li>
-        <li>Galadriel</li>
-        <li>Elrond</li>
-        <li>Thorin</li>
-        <li>Sauron</li>
-        <li>Aragorn</li>
-  </ol>
+    <h2>My current favorites (by category)</h2>
+    <h3>Programming 1. Go - For its simplicity and concurrency 2. Rust - For its memory safety and performance 3. Python - For rapid prototyping and versatility</h3>
+    <h3>Gaming 1. Strategy games (Total War, Civilization) 2. RPGs with deep customization 3. Indie games that push creative boundaries</h3>
+    <h3>Fitness 1. Compound lifts (deadlifts, squats, bench) 2. Progressive overload principles 3. Consistency over perfection</h3>
     <p>
-    Here's what 
-        <code>elflang</code>
-     looks like (the perfect coding language):
+    Here's what elegant Go code looks like:
   </p>
-    <pre><code>func main(){
-    fmt.Println("Aiya, Ambar!")
+    <pre><code>func main() {
+    fmt.Println("Hello, concurrent world!")
+
+ch := make(chan string, 3)
+go func() { ch <- "goroutines" }()
+go func() { ch <- "are" }()
+go func() { ch <- "awesome" }()
+
+for i := 0; i < 3; i++ {
+    fmt.Println(<-ch)
+}
 }
 </code></pre>
     <p>
     Want to get in touch? 
-        <a href=/Acuendo-SSG/contact>Contact me here</a>
+        <a href=/contact>Contact me here</a>
     .
   </p>
     <p>
-    This site was generated with a custom-built static site generator.
+    This site was generated with a custom-built static site generator. Check out my other projects at 
+        <a href=https://kiefx.me/>kiefx.me</a>
+    .
   </p>
 </div></article>
   </body>
