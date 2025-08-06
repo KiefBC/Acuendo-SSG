@@ -24,16 +24,19 @@ Here's the deal, **I'm passionate about technology, gaming, and fitness**.
 ## My current favorites (by category)
 
 ### Programming
+
 1. Go - For its simplicity and concurrency
 2. Rust - For its memory safety and performance
 3. Python - For rapid prototyping and versatility
 
 ### Gaming
+
 1. Strategy games (Total War, Civilization)
 2. RPGs with deep customization
 3. Indie games that push creative boundaries
 
 ### Fitness
+
 1. Compound lifts (deadlifts, squats, bench)
 2. Progressive overload principles
 3. Consistency over perfection
